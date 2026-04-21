@@ -12,7 +12,7 @@
             <p>Trabajador: <span th:text="${post.trabajador.nombre}"></span></p>
             <p>Mensaje: <span th:text="${post.mensaje}"></span></p>
             <p>Estado: <span th:text="${post.estado}"></span></p>
-            <div th:if="${post.estado == 'PENDIENTE'}">
+            <div th:if="${post.estado.name() == 'PENDIENTE'}">
                 <form method="post" th:action="@{/postulaciones/{id}/aceptar(id=${post.id})}" style="display:inline">
                     <button type="submit">Aceptar</button>
                 </form>
