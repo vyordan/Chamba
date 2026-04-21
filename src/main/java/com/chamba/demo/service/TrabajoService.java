@@ -99,36 +99,36 @@ public class TrabajoService {
         trabajoRepository.save(trabajo);
     }
 
-    public void cancelarTrabajo(Trabajo trabajo) {
-        // Buscar el contrato asociado
-        Contrato contrato = contratoRepository.findByTrabajo(trabajo)
-            .orElseThrow(() -> new RuntimeException("Contrato no encontrado"));
+public void cancelarTrabajo(Trabajo trabajo) {
+    // Buscar el contrato asociado
+    Contrato contrato = contratoRepository.findByTrabajo(trabajo)
+        .orElseThrow(() -> new RuntimeException("Contrato no encontrado"));
+    
+    // Solo se puede cancelar si está pendiente de asignación (aún sin trabajador)
+    if (contrato.getEstado() == EstadoContrato.PENDIENTE_ASIGNACION) {
+        // Devolver el dinero al contratante
+        Usuario contratante = trabajo.getContratante();
+        Wallet wallet = contratante.getWallet();
+        wallet.setSaldo(wallet.getSaldo() + contrato.getMontoRetenido());
+        walletRepository.save(wallet);
         
-        // Solo se puede cancelar si está pendiente de asignación (aún sin trabajador)
-        if (contrato.getEstado() == EstadoContrato.PENDIENTE_ASIGNACION) {
-            // Devolver el dinero al contratante
-            Usuario contratante = trabajo.getContratante();
-            Wallet wallet = contratante.getWallet();
-            wallet.setSaldo(wallet.getSaldo() + contrato.getMontoRetenido());
-            walletRepository.save(wallet);
-            
-            // Registrar transacción de devolución
-            Transaccion trans = new Transaccion();
-            trans.setFecha(LocalDateTime.now());
-            trans.setMonto(contrato.getMontoRetenido());
-            trans.setTipo("DEVOLUCION_CANCELACION");
-            trans.setDescripcion("Devolución por cancelación de trabajo: " + trabajo.getTitulo());
-            trans.setUsuarioDestino(contratante);
-            trans.setTrabajo(trabajo);
-            transaccionRepository.save(trans);
-            
-            // Actualizar estados
-            contrato.setEstado(EstadoContrato.CANCELADO);
-            contratoRepository.save(contrato);
-            trabajo.setEstado(EstadoTrabajo.CANCELADO);
-            trabajoRepository.save(trabajo);
-        } else {
-            throw new RuntimeException("No se puede cancelar un trabajo que ya tiene un trabajador asignado");
-        }
+        // Registrar transacción de devolución
+        Transaccion trans = new Transaccion();
+        trans.setFecha(LocalDateTime.now());
+        trans.setMonto(contrato.getMontoRetenido());
+        trans.setTipo("DEVOLUCION_CANCELACION");
+        trans.setDescripcion("Devolución por cancelación de trabajo: " + trabajo.getTitulo());
+        trans.setUsuarioDestino(contratante);
+        trans.setTrabajo(trabajo);
+        transaccionRepository.save(trans);
+        
+        // Actualizar estados
+        contrato.setEstado(EstadoContrato.CANCELADO);
+        contratoRepository.save(contrato);
+        trabajo.setEstado(EstadoTrabajo.CANCELADO);
+        trabajoRepository.save(trabajo);
+    } else {
+        throw new RuntimeException("No se puede cancelar un trabajo que ya tiene un trabajador asignado");
     }
+}
 }

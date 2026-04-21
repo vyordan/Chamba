@@ -23,10 +23,14 @@ public class PostulacionController {
     @Autowired
     private UsuariosService usuariosService;
 
+    //@Autowired
+    //private ContratoRepository contratoRepository;  // ← AGREGAR ESTO
+    @Autowired
+    private ContratoRepository contratoRepository;
+
+
     // @Autowired private PagoService pagoService;  // si no lo usas, coméntalo o elimínalo
 
-    @Autowired
-    private ContratoRepository contratoRepository;  // ← AGREGAR ESTO
 
     @PostMapping("/crear")
     public String postular(@RequestParam Long trabajoId, @RequestParam String mensaje, HttpSession session) {

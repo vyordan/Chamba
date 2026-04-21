@@ -5,6 +5,7 @@ import com.chamba.demo.model.Wallet;
 import com.chamba.demo.repository.UsuarioRespository;
 import com.chamba.demo.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,7 +66,7 @@ public class UsuariosService {
         return null;
     }
 
-    public Usuario obtenerPorId(Long id) {
+    public Usuario obtenerPorId(@NonNull Long id) {
         return usuarioRepository.findById(id).orElse(null);
     }
 }

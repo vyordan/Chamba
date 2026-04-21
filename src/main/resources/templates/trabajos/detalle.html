@@ -12,9 +12,14 @@
     <p>Estado: <span th:text="${trabajo.estado}"></span></p>
     <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
 
-    <div th:if="${session.usuarioId == trabajo.contratante.id and trabajo.estado == 'ABIERTO'}">
-        <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}">
-            <button type="submit" onclick="return confirm('¿Cancelar este trabajo?')">Cancelar trabajo</button>
+    <!-- ✨ Nuevo bloque: formulario para postularse ✨ -->
+    <div th:if="true">
+        <h3>Postularme a este trabajo</h3>
+        <form method="post" th:action="@{/postulaciones/crear}">
+            <input type="hidden" name="trabajoId" th:value="${trabajo.id}" />
+            <label>Mensaje para el contratante:</label><br />
+            <textarea name="mensaje" rows="3" cols="40" placeholder="Cuéntale por qué eres la persona ideal para este trabajo..."></textarea><br /><br />
+            <button type="submit">Enviar postulación</button>
         </form>
     </div>
 
