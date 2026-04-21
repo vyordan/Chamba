@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del trabajo - Chamba</title>
+    <title>Detalle del trabajo · Chamba</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -17,9 +17,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f0f4f8;
+            background: #0b0b0b; /* Fondo negro sólido */
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 40px 24px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,31 +32,31 @@
 
         /* Tarjeta principal */
         .job-card {
-            background: white;
-            border-radius: 32px;
-            padding: 36px 32px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            padding: 44px 40px;
             transition: box-shadow 0.2s;
         }
 
         .job-card:hover {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
         /* Título */
         h2 {
             font-size: 28px;
             font-weight: 700;
-            color: #1a202c;
+            color: #ffffff;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
             flex-wrap: wrap;
+            letter-spacing: -0.02em;
         }
 
         h2 i {
-            color: #667eea;
+            color: #3b8c3a;
             font-size: 28px;
         }
 
@@ -65,36 +65,43 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 14px;
+            padding: 5px 14px;
+            font-size: 12px;
             font-weight: 600;
             margin-left: auto;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        /* Estados - colores sólidos y sobrios */
         .status-ABIERTO {
-            background: #c6f6d5;
-            color: #22543d;
+            background: #1b5e20;
+            color: #a5d6a7;
         }
 
         .status-EN_CURSO {
-            background: #feebc8;
-            color: #7b341e;
+            background: #e65100;
+            color: #ffcc80;
         }
 
         .status-COMPLETADO {
-            background: #e9d8fd;
-            color: #44337a;
+            background: #1565c0;
+            color: #90caf9;
         }
 
         .status-CANCELADO {
-            background: #fed7d7;
-            color: #742a2a;
+            background: #b71c1c;
+            color: #ef9a9a;
+        }
+
+        .status-badge i {
+            font-size: 6px;
         }
 
         /* Lista de detalles */
         .details-list {
-            margin: 24px 0;
+            margin: 28px 0;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -104,33 +111,33 @@
             display: flex;
             align-items: flex-start;
             gap: 14px;
-            font-size: 16px;
-            color: #2d3748;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 12px;
+            font-size: 14px;
+            color: #e0e0e0;
+            border-bottom: 1px solid #262626;
+            padding-bottom: 14px;
         }
 
         .detail-item i {
-            width: 24px;
-            color: #667eea;
-            font-size: 18px;
+            width: 22px;
+            color: #3b8c3a;
+            font-size: 16px;
             margin-top: 2px;
         }
 
         .detail-item strong {
             font-weight: 600;
             min-width: 100px;
-            color: #4a5568;
+            color: #b0b0b0;
         }
 
         .detail-item span {
-            color: #1a202c;
+            color: #e0e0e0;
         }
 
         .amount {
             font-size: 24px;
             font-weight: 700;
-            color: #667eea;
+            color: #3b8c3a;
         }
 
         /* Botón de cancelar */
@@ -139,40 +146,43 @@
         }
 
         .btn-cancel {
-            background: #fff5f5;
-            color: #e53e3e;
-            border: 1px solid #fed7d7;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 700;
+            background: #2a1212;
+            color: #ff8a8a;
+            border: 1px solid #b71c1c;
+            padding: 10px 22px;
+            font-size: 13px;
+            font-weight: 600;
             font-family: 'Inter', sans-serif;
             display: inline-flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
             transition: all 0.2s;
+            border-radius: 4px;
         }
 
         .btn-cancel:hover {
-            background: #fed7d7;
-            transform: translateY(-1px);
+            background: #3a1818;
+            border-color: #e53935;
+            color: #ffabab;
         }
 
         .btn-cancel:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         /* Enlace volver */
         .back-link {
-            margin-top: 16px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #262626;
             text-align: center;
         }
 
         .back-link a {
-            color: #718096;
+            color: #8a8a8a;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
@@ -181,7 +191,25 @@
         }
 
         .back-link a:hover {
-            color: #667eea;
+            color: #3b8c3a;
+        }
+
+        /* Mensaje de error */
+        .error-message {
+            background: #2a1212;
+            border-left: 3px solid #e53935;
+            padding: 12px 16px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #ff8a8a;
+        }
+
+        .error-message i {
+            font-size: 16px;
+            color: #e53935;
         }
 
         /* Responsive */
@@ -190,7 +218,7 @@
                 padding: 20px 16px;
             }
             .job-card {
-                padding: 24px 20px;
+                padding: 28px 24px;
             }
             h2 {
                 font-size: 22px;
@@ -222,7 +250,7 @@
                 <i class="fas fa-briefcase"></i>
                 <span th:text="${trabajo.titulo}">Título del trabajo</span>
                 <span class="status-badge" th:classappend="'status-' + ${trabajo.estado}">
-                    <i class="fas fa-circle" style="font-size: 8px;"></i>
+                    <i class="fas fa-circle"></i>
                     <span th:text="${trabajo.estado}">Estado</span>
                 </span>
             </h2>
@@ -258,6 +286,12 @@
                         <i class="fas fa-times-circle"></i> Cancelar trabajo
                     </button>
                 </form>
+            </div>
+
+            <!-- Mensaje de error (Thymeleaf) -->
+            <div th:if="${error}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:text="${error}"></span>
             </div>
 
             <!-- Enlace volver -->

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Chamba</title>
+    <title>Registro · Chamba</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -17,60 +17,55 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0b0b0b; /* Fondo negro sólido */
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 40px 24px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Tarjeta principal */
+        /* Tarjeta principal - estilo serio, oscuro, bordes rectos */
         .register-card {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(2px);
-            border-radius: 36px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
             width: 100%;
-            max-width: 800px;
-            padding: 40px 36px;
-            transition: transform 0.2s ease;
+            max-width: 900px;
+            padding: 44px 48px;
+            transition: box-shadow 0.2s ease;
         }
 
         .register-card:hover {
-            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.8);
         }
 
         /* Encabezado */
         .logo {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .logo i {
             font-size: 52px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: #3b8c3a; /* Verde serio y opaco */
         }
 
         h2 {
             text-align: center;
             font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #2d3748, #4a5568);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: #ffffff;
             margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
 
         .subtitle {
             text-align: center;
-            color: #718096;
+            color: #8a8a8a;
             font-size: 14px;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
+            font-weight: 450;
         }
 
         /* Formulario en grid (dos columnas en desktop) */
@@ -93,80 +88,82 @@
 
         .input-group label {
             font-weight: 600;
-            font-size: 14px;
-            color: #2d3748;
+            font-size: 13px;
+            color: #b0b0b0;
             display: flex;
             align-items: center;
             gap: 8px;
+            letter-spacing: 0.3px;
         }
 
         .input-group label i {
-            color: #667eea;
-            width: 18px;
-            font-size: 14px;
+            color: #3b8c3a;
+            width: 16px;
+            font-size: 13px;
         }
 
         .input-group input,
         .input-group select {
-            padding: 12px 16px;
+            padding: 10px 14px;
             font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 24px;
-            background: #f9fafb;
+            font-size: 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             transition: all 0.2s ease;
             outline: none;
+            color: #e0e0e0;
+            border-radius: 4px;
         }
 
         .input-group input:focus,
         .input-group select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-            background: white;
+            border-color: #3b8c3a;
+            background: #1e1e1e;
+        }
+
+        .input-group input::placeholder {
+            color: #6c6c6c;
         }
 
         /* Campo de archivo (estilizado) */
-        .file-input {
-            position: relative;
-        }
-
         .file-input input[type="file"] {
-            padding: 10px 12px;
-            background: #f9fafb;
+            padding: 8px 10px;
+            background: #1a1a1a;
             cursor: pointer;
+            color: #b0b0b0;
         }
 
         .file-input input[type="file"]::file-selector-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #2e7d32;
             border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
+            padding: 6px 14px;
+            border-radius: 4px;
             color: white;
             font-weight: 500;
             margin-right: 12px;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
         }
 
         .file-input input[type="file"]::file-selector-button:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46a0);
+            background: #1b5e20;
         }
 
         /* Botón de registro */
         button[type="submit"] {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 12px;
+            background: #2e7d32;
             border: none;
-            border-radius: 40px;
+            border-radius: 4px;
             color: white;
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 16px;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s ease;
+            margin-top: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -174,9 +171,7 @@
         }
 
         button[type="submit"]:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 22px rgba(102, 126, 234, 0.4);
-            background: linear-gradient(135deg, #5a67d8, #6b46a0);
+            background: #1b5e20;
         }
 
         button[type="submit"]:active {
@@ -185,44 +180,45 @@
 
         /* Mensaje de error */
         .error-message {
-            background: #fff5f5;
-            border-left: 4px solid #f56565;
-            padding: 12px 18px;
-            border-radius: 20px;
+            background: #2a1212;
+            border-left: 3px solid #e53935;
+            padding: 12px 16px;
             margin-top: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #c53030;
-            font-size: 14px;
+            font-size: 13px;
+            color: #ff8a8a;
         }
 
         .error-message i {
-            font-size: 18px;
+            font-size: 16px;
+            color: #e53935;
         }
 
-        /* Enlace a login (opcional, añadido por usabilidad) */
+        /* Enlace a login */
         .login-link {
             text-align: center;
             margin-top: 28px;
             font-size: 14px;
+            color: #8a8a8a;
         }
 
         .login-link a {
-            color: #667eea;
+            color: #3b8c3a;
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s;
         }
 
         .login-link a:hover {
-            text-decoration: underline;
-            color: #764ba2;
+            color: #6ab04c;
         }
 
         /* Responsive */
-        @media (max-width: 640px) {
+        @media (max-width: 680px) {
             .register-card {
-                padding: 28px 20px;
+                padding: 32px 24px;
             }
             .form-grid {
                 grid-template-columns: 1fr;
@@ -236,20 +232,14 @@
             }
         }
 
-        /* Animación */
+        /* Animación simple */
         .register-card {
-            animation: fadeInUp 0.5s ease-out;
+            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -322,7 +312,7 @@
             <span th:text="${error}"></span>
         </div>
 
-        <!-- Enlace para volver al login (mejora UX, no interfiere) -->
+        <!-- Enlace para volver al login -->
         <div class="login-link">
             ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
         </div>
