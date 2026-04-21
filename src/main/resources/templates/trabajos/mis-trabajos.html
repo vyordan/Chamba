@@ -2,26 +2,245 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis trabajos - Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: #667eea;
+            font-size: 26px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #edf2f7;
+            color: #667eea;
+        }
+
+        /* Grid de trabajos */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        /* Tarjeta de trabajo */
+        .job-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .job-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .status-ABIERTO {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-EN_CURSO {
+            background: #feebc8;
+            color: #7b341e;
+        }
+
+        .status-COMPLETADO {
+            background: #e9d8fd;
+            color: #44337a;
+        }
+
+        .status-CANCELADO {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .job-amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 12px 0;
+        }
+
+        .job-amount i {
+            font-size: 16px;
+            color: #a0aec0;
+        }
+
+        .btn-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #edf2f7;
+            color: #4a5568;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 12px;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-detail:hover {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        hr {
+            display: none;
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            color: #cbd5e0;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 20px 16px;
+            }
+            .header {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Mis trabajos publicados</h2>
-    <a href="/trabajos/nuevo">Publicar nuevo</a> |
-    <a href="/trabajos">Ver todos</a> |
-    <a href="/logout">Cerrar sesión</a>
-    <hr>
-    <div th:each="trabajo : ${trabajos}">
-        <h3 th:text="${trabajo.titulo}"></h3>
-        <p>Estado: <span th:text="${trabajo.estado}"></span></p>
-        <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
-        <a th:href="@{/trabajos/{id}(id=${trabajo.id})}">Ver detalle</a>
+    <div class="container">
+        <div class="header">
+            <h2>
+                <i class="fas fa-briefcase"></i>
+                Mis trabajos publicados
+            </h2>
+            <div class="nav-links">
+                <a href="/trabajos/nuevo"><i class="fas fa-plus-circle"></i> Publicar nuevo</a>
+                <a href="/trabajos"><i class="fas fa-list"></i> Ver todos</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </div>
 
-        <!-- Botón cancelar: solo si el trabajo está ABIERTO -->
-        <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}" style="display:inline">
-            <button type="submit" onclick="return confirm('¿Cancelar este trabajo?')">Cancelar trabajo</button>
-        </form>
-        <hr>
+        <!-- Listado de trabajos en tarjetas -->
+        <div class="jobs-grid" th:unless="${trabajos.isEmpty()}">
+            <div th:each="trabajo : ${trabajos}" class="job-card">
+                <div class="job-title" th:text="${trabajo.titulo}"></div>
+                <div class="job-status" th:classappend="'status-' + ${trabajo.estado}">
+                    <span th:text="${trabajo.estado}"></span>
+                </div>
+                <div class="job-amount">
+                    <i class="fas fa-coins"></i> Q <span th:text="${trabajo.monto}"></span>
+                </div>
+                <a th:href="@{/trabajos/{id}(id=${trabajo.id})}" class="btn-detail">
+                    <i class="fas fa-eye"></i> Ver detalle
+                </a>
+            </div>
+        </div>
+
+        <!-- Mensaje cuando no hay trabajos -->
+        <div th:if="${trabajos.isEmpty()}" class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>No has publicado ningún trabajo aún</p>
+            <a href="/trabajos/nuevo" style="display: inline-block; margin-top: 20px; background: #667eea; color: white; padding: 10px 24px; border-radius: 40px; text-decoration: none; font-weight: 600;">Publicar mi primer trabajo</a>
+        </div>
     </div>
-    
 </body>
 </html>

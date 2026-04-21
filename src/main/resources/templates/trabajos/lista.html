@@ -2,25 +2,285 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trabajos disponibles - Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2 i {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        /* Navegación con scroll horizontal en móvil */
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            background: #f7fafc;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #edf2f7;
+            color: #667eea;
+        }
+
+        /* Grid de trabajos */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        /* Tarjeta de trabajo */
+        .job-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .job-title a {
+            color: #2d3748;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .job-title a:hover {
+            color: #667eea;
+        }
+
+        .job-description {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .job-meta i {
+            width: 18px;
+            color: #667eea;
+            margin-right: 6px;
+        }
+
+        .job-meta span {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .job-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 12px 0 8px;
+        }
+
+        .job-publisher {
+            font-size: 13px;
+            color: #a0aec0;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #edf2f7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .job-publisher i {
+            color: #667eea;
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: white;
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            .header {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .nav-links {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-links a {
+                white-space: nowrap;
+            }
+            .jobs-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Trabajos disponibles</h2>
-    <a href="/trabajos/nuevo">Publicar trabajo</a> |
-    <a href="/trabajos/mis-trabajos">Mis trabajos</a> |
-    <a href="/postulaciones/mis-postulaciones">Mis postulaciones</a> |
-    <a href="/postulaciones/recibidas">Postulaciones recibidas</a> |
-    <a href="/contratos/mis-contratos">Mis contratos</a> |
-    <a href="/wallet">Mi billetera</a> |
-    <a href="/logout">Cerrar sesión</a>
-    <hr>
-    <div th:each="trabajo : ${trabajos}">
-        <h3><a th:href="@{/trabajos/{id}(id=${trabajo.id})}" th:text="${trabajo.titulo}"></a></h3>
-        <p>Descripción: <span th:text="${trabajo.descripcion}"></span></p>
-        <p>Ubicación: <span th:text="${trabajo.ubicacion}"></span></p>
-        <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
-        <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
-        <hr>
+    <div class="container">
+        <div class="header">
+            <h2>
+                <i class="fas fa-briefcase"></i>
+                Trabajos disponibles
+            </h2>
+            <div class="nav-links">
+                <a href="/trabajos/nuevo"><i class="fas fa-plus-circle"></i> Publicar trabajo</a>
+                <a href="/trabajos/mis-trabajos"><i class="fas fa-user-briefcase"></i> Mis trabajos</a>
+                <a href="/postulaciones/mis-postulaciones"><i class="fas fa-file-signature"></i> Mis postulaciones</a>
+                <a href="/postulaciones/recibidas"><i class="fas fa-inbox"></i> Postulaciones recibidas</a>
+                <a href="/contratos/mis-contratos"><i class="fas fa-file-contract"></i> Mis contratos</a>
+                <a href="/wallet"><i class="fas fa-wallet"></i> Mi billetera</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </div>
+
+        <!-- Listado de trabajos en tarjetas -->
+        <div class="jobs-grid" th:unless="${trabajos.isEmpty()}">
+            <div th:each="trabajo : ${trabajos}" class="job-card">
+                <div class="job-title">
+                    <a th:href="@{/trabajos/{id}(id=${trabajo.id})}" th:text="${trabajo.titulo}"></a>
+                </div>
+                <div class="job-description" th:text="${trabajo.descripcion}"></div>
+                <div class="job-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> <span th:text="${trabajo.ubicacion}">Ciudad</span></span>
+                </div>
+                <div class="job-amount">
+                    Q <span th:text="${trabajo.monto}"></span>
+                </div>
+                <div class="job-publisher">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Publicado por: <strong th:text="${trabajo.contratante.nombre}"></strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje cuando no hay trabajos -->
+        <div th:if="${trabajos.isEmpty()}" class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>No hay trabajos disponibles en este momento</p>
+            <a href="/trabajos/nuevo" class="btn-primary">
+                <i class="fas fa-plus-circle"></i> Publicar el primer trabajo
+            </a>
+        </div>
     </div>
 </body>
 </html>

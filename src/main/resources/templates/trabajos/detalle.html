@@ -2,22 +2,269 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del trabajo - Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* Tarjeta principal */
+        .job-card {
+            background: white;
+            border-radius: 32px;
+            padding: 36px 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Título */
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        h2 i {
+            color: #667eea;
+            font-size: 28px;
+        }
+
+        /* Badge de estado */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .status-ABIERTO {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-EN_CURSO {
+            background: #feebc8;
+            color: #7b341e;
+        }
+
+        .status-COMPLETADO {
+            background: #e9d8fd;
+            color: #44337a;
+        }
+
+        .status-CANCELADO {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        /* Lista de detalles */
+        .details-list {
+            margin: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            font-size: 16px;
+            color: #2d3748;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 12px;
+        }
+
+        .detail-item i {
+            width: 24px;
+            color: #667eea;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .detail-item strong {
+            font-weight: 600;
+            min-width: 100px;
+            color: #4a5568;
+        }
+
+        .detail-item span {
+            color: #1a202c;
+        }
+
+        .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Botón de cancelar */
+        .cancel-form {
+            margin: 24px 0 20px;
+        }
+
+        .btn-cancel {
+            background: #fff5f5;
+            color: #e53e3e;
+            border: 1px solid #fed7d7;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #fed7d7;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel:active {
+            transform: translateY(0);
+        }
+
+        /* Enlace volver */
+        .back-link {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: #718096;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #667eea;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            body {
+                padding: 20px 16px;
+            }
+            .job-card {
+                padding: 24px 20px;
+            }
+            h2 {
+                font-size: 22px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .status-badge {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+            .detail-item {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .detail-item i {
+                display: none;
+            }
+            .detail-item strong {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2 th:text="${trabajo.titulo}"></h2>
-    <p>Descripción: <span th:text="${trabajo.descripcion}"></span></p>
-    <p>Ubicación: <span th:text="${trabajo.ubicacion}"></span></p>
-    <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
-    <p>Estado: <span th:text="${trabajo.estado}"></span></p>
-    <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
+    <div class="container">
+        <div class="job-card">
+            <!-- Título y estado -->
+            <h2>
+                <i class="fas fa-briefcase"></i>
+                <span th:text="${trabajo.titulo}">Título del trabajo</span>
+                <span class="status-badge" th:classappend="'status-' + ${trabajo.estado}">
+                    <i class="fas fa-circle" style="font-size: 8px;"></i>
+                    <span th:text="${trabajo.estado}">Estado</span>
+                </span>
+            </h2>
 
-    <div th:if="${session.usuarioId == trabajo.contratante.id and trabajo.estado == 'ABIERTO'}">
-        <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}">
-            <button type="submit" onclick="return confirm('¿Cancelar este trabajo?')">Cancelar trabajo</button>
-        </form>
+            <!-- Detalles -->
+            <div class="details-list">
+                <div class="detail-item">
+                    <i class="fas fa-align-left"></i>
+                    <strong>Descripción:</strong>
+                    <span th:text="${trabajo.descripcion}">Descripción del trabajo</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <strong>Ubicación:</strong>
+                    <span th:text="${trabajo.ubicacion}">Ubicación</span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-coins"></i>
+                    <strong>Monto:</strong>
+                    <span class="amount">Q <span th:text="${trabajo.monto}">0.00</span></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-user-circle"></i>
+                    <strong>Publicado por:</strong>
+                    <span th:text="${trabajo.contratante.nombre}">Nombre del contratante</span>
+                </div>
+            </div>
+
+            <!-- Botón cancelar (solo si el usuario es el contratante y el trabajo está ABIERTO) -->
+            <div th:if="${session.usuarioId == trabajo.contratante.id and trabajo.estado == 'ABIERTO'}" class="cancel-form">
+                <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}">
+                    <button type="submit" class="btn-cancel" onclick="return confirm('¿Estás seguro de que deseas cancelar este trabajo? Esta acción no se puede deshacer.')">
+                        <i class="fas fa-times-circle"></i> Cancelar trabajo
+                    </button>
+                </form>
+            </div>
+
+            <!-- Enlace volver -->
+            <div class="back-link">
+                <a href="/trabajos"><i class="fas fa-arrow-left"></i> Volver a trabajos disponibles</a>
+            </div>
+        </div>
     </div>
-
-    <a href="/trabajos">Volver</a>
 </body>
 </html>

@@ -2,31 +2,330 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Tarjeta principal */
+        .register-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 36px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 36px;
+            transition: transform 0.2s ease;
+        }
+
+        .register-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Encabezado */
+        .logo {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .logo i {
+            font-size: 52px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        /* Formulario en grid (dos columnas en desktop) */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 24px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        /* Estilos de cada campo */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group label i {
+            color: #667eea;
+            width: 18px;
+            font-size: 14px;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 12px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            background: #f9fafb;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: white;
+        }
+
+        /* Campo de archivo (estilizado) */
+        .file-input {
+            position: relative;
+        }
+
+        .file-input input[type="file"] {
+            padding: 10px 12px;
+            background: #f9fafb;
+            cursor: pointer;
+        }
+
+        .file-input input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 500;
+            margin-right: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-input input[type="file"]::file-selector-button:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46a0);
+        }
+
+        /* Botón de registro */
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button[type="submit"]:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 22px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a67d8, #6b46a0);
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        /* Mensaje de error */
+        .error-message {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #c53030;
+            font-size: 14px;
+        }
+
+        .error-message i {
+            font-size: 18px;
+        }
+
+        /* Enlace a login (opcional, añadido por usabilidad) */
+        .login-link {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+            color: #764ba2;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .register-card {
+                padding: 28px 20px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Animación */
+        .register-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Registro de usuario</h2>
-    <form method="post" action="/registro" enctype="multipart/form-data">
-        <label>Nombre completo:</label>
-        <input type="text" name="nombre" required><br>
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-        <label>Teléfono:</label>
-        <input type="text" name="telefono"><br>
-        <label>Contraseña:</label>
-        <input type="password" name="password" required><br>
-        <label>Tipo:</label>
-        <select name="tipo">
-            <option value="contratante">Contratante</option>
-            <option value="trabajador">Trabajador</option>
-            <option value="ambos">Ambos</option>
-        </select><br>
-        <label>Ubicación:</label>
-        <input type="text" name="ubicacion" placeholder="Ciudad, zona"><br>
-        <label>Foto de perfil:</label>
-        <input type="file" name="foto" accept="image/*"><br>
-        <button type="submit">Registrarse</button>
-    </form>
-    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+    <div class="register-card">
+        <div class="logo">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <h2>Crear cuenta</h2>
+        <div class="subtitle">Únete a la comunidad de Chamba</div>
+
+        <!-- Formulario con Thymeleaf (se conservan action, method y enctype) -->
+        <form method="post" action="/registro" enctype="multipart/form-data">
+            <div class="form-grid">
+                <!-- Nombre completo -->
+                <div class="input-group full-width">
+                    <label><i class="fas fa-user"></i> Nombre completo</label>
+                    <input type="text" name="nombre" placeholder="Ej: María Pérez" required>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group">
+                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                    <input type="email" name="email" placeholder="tu@email.com" required>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="input-group">
+                    <label><i class="fas fa-phone-alt"></i> Teléfono</label>
+                    <input type="text" name="telefono" placeholder="+502 1234 5678">
+                </div>
+
+                <!-- Contraseña -->
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" name="password" placeholder="Mínimo 6 caracteres" required>
+                </div>
+
+                <!-- Tipo de usuario -->
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> Tipo de cuenta</label>
+                    <select name="tipo">
+                        <option value="contratante">Contratante</option>
+                        <option value="trabajador">Trabajador</option>
+                        <option value="ambos">Ambos</option>
+                    </select>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="input-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                    <input type="text" name="ubicacion" placeholder="Ciudad, zona">
+                </div>
+
+                <!-- Foto de perfil (ocupa toda la fila) -->
+                <div class="input-group full-width file-input">
+                    <label><i class="fas fa-camera"></i> Foto de perfil</label>
+                    <input type="file" name="foto" accept="image/*">
+                </div>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-user-check"></i> Registrarse
+            </button>
+        </form>
+
+        <!-- Mensaje de error de Thymeleaf -->
+        <div th:if="${error}" class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Enlace para volver al login (mejora UX, no interfiere) -->
+        <div class="login-link">
+            ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
+        </div>
+    </div>
 </body>
 </html>
