@@ -37,14 +37,20 @@ public class TrabajoController {
 
     @PostMapping("/crear")
     public String crearTrabajo(@RequestParam String titulo,
-                               @RequestParam String descripcion,
-                               @RequestParam String ubicacion,
-                               @RequestParam Double monto,
-                               HttpSession session) {
+                            @RequestParam String descripcion,
+                            @RequestParam String ubicacion,
+                            @RequestParam Double monto,
+                            HttpSession session,
+                            Model model) {
         Long userId = (Long) session.getAttribute("usuarioId");
         Usuario contratante = usuariosService.obtenerPorId(userId);
-        trabajoService.publicar(contratante, titulo, descripcion, ubicacion, monto);
-        return "redirect:/trabajos/mis-trabajos";
+        try {
+            trabajoService.publicar(contratante, titulo, descripcion, ubicacion, monto);
+            return "redirect:/trabajos/mis-trabajos";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "trabajos/nuevo";
+        }
     }
 
     @GetMapping("/mis-trabajos")

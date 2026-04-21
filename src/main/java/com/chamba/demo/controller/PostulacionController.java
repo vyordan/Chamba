@@ -1,6 +1,8 @@
 package com.chamba.demo.controller;
 
 import com.chamba.demo.model.*;
+import com.chamba.demo.model.enums.EstadoContrato;
+import com.chamba.demo.repository.ContratoRepository;  // ← importar
 import com.chamba.demo.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,10 @@ public class PostulacionController {
     @Autowired
     private UsuariosService usuariosService;
 
+    // @Autowired private PagoService pagoService;  // si no lo usas, coméntalo o elimínalo
+
     @Autowired
-    private PagoService pagoService;
+    private ContratoRepository contratoRepository;  // ← AGREGAR ESTO
 
     @PostMapping("/crear")
     public String postular(@RequestParam Long trabajoId, @RequestParam String mensaje, HttpSession session) {
@@ -53,13 +57,23 @@ public class PostulacionController {
             return "redirect:/postulaciones/recibidas";
         }
 
-        try {
-            pagoService.retenerPago(contratante, trabajador, trabajo, trabajo.getMonto());
-            postulacionService.aceptarPostulacion(post);
-            trabajoService.cerrarTrabajo(trabajo);
-        } catch (RuntimeException e) {
-            return "redirect:/postulaciones/recibidas?error=saldo";
+        // Buscar el contrato asociado al trabajo
+        Contrato contrato = contratoRepository.findByTrabajo(trabajo)
+            .orElseThrow(() -> new RuntimeException("Contrato no encontrado"));
+        
+        if (contrato.getEstado() != EstadoContrato.PENDIENTE_ASIGNACION) {
+            throw new RuntimeException("El trabajo ya no está disponible para asignar");
         }
+        
+        // Asignar el trabajador y cambiar estado
+        contrato.setTrabajador(trabajador);
+        contrato.setEstado(EstadoContrato.EN_PROGRESO);
+        contratoRepository.save(contrato);
+        
+        // Aceptar la postulación y cerrar el trabajo
+        postulacionService.aceptarPostulacion(post);
+        trabajoService.cerrarTrabajo(trabajo);
+        
         return "redirect:/contratos/mis-contratos";
     }
 
