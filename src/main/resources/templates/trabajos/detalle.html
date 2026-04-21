@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del trabajo - Chamba</title>
+</head>
+<body>
+    <h2 th:text="${trabajo.titulo}"></h2>
+    <p>Descripción: <span th:text="${trabajo.descripcion}"></span></p>
+    <p>Ubicación: <span th:text="${trabajo.ubicacion}"></span></p>
+    <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
+    <p>Estado: <span th:text="${trabajo.estado}"></span></p>
+    <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
+
+    <div th:if="${session.usuarioId == trabajo.contratante.id and trabajo.estado == 'ABIERTO'}">
+        <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}">
+            <button type="submit" onclick="return confirm('¿Cancelar este trabajo?')">Cancelar trabajo</button>
+        </form>
+    </div>
+
+    <a href="/trabajos">Volver</a>
+</body>
+</html>

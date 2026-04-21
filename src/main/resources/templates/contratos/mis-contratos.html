@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis contratos - Chamba</title>
+</head>
+<body>
+    <h2>Contratos como contratante</h2>
+    <div th:each="c : ${comoContratante}">
+        <p>Trabajo: <span th:text="${c.trabajo.titulo}"></span></p>
+        <p>Trabajador: <span th:text="${c.trabajador.nombre}"></span></p>
+        <p>Monto retenido: Q<span th:text="${c.montoRetenido}"></span></p>
+        <p>Estado: <span th:text="${c.estado}"></span></p>
+        <div th:if="${c.estado == 'EN_PROGRESO'}">
+            <form method="post" th:action="@{/contratos/{id}/completar(id=${c.id})}" style="display:inline">
+                <button type="submit">Marcar como completado</button>
+            </form>
+            <form method="post" th:action="@{/contratos/{id}/cancelar(id=${c.id})}" style="display:inline">
+                <button type="submit">Cancelar contrato</button>
+            </form>
+            <a th:href="@{/resenias/nueva/{id}(id=${c.id})}">Calificar trabajador</a>
+        </div>
+        <hr>
+    </div>
+
+    <h2>Contratos como trabajador</h2>
+    <div th:each="c : ${comoTrabajador}">
+        <p>Trabajo: <span th:text="${c.trabajo.titulo}"></span></p>
+        <p>Contratante: <span th:text="${c.contratante.nombre}"></span></p>
+        <p>Monto a recibir: Q<span th:text="${c.montoRetenido - c.montoRetenido * 0.05}"></span> (comisión 5%)</p>
+        <p>Estado: <span th:text="${c.estado}"></span></p>
+        <hr>
+    </div>
+    <a href="/trabajos">Volver</a>
+</body>
+</html>

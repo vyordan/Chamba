@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis postulaciones - Chamba</title>
+</head>
+<body>
+    <h2>Mis postulaciones</h2>
+    <div th:each="post : ${postulaciones}">
+        <p>Trabajo: <span th:text="${post.trabajo.titulo}"></span></p>
+        <p>Mensaje: <span th:text="${post.mensaje}"></span></p>
+        <p>Estado: <span th:text="${post.estado}"></span></p>
+        <p>Contratante: <span th:text="${post.trabajo.contratante.nombre}"></span></p>
+        <hr>
+    </div>
+    <a href="/trabajos">Volver</a>
+</body>
+</html>

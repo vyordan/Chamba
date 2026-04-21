@@ -1,5 +1,7 @@
 package com.chamba.demo.model.enums;
 
-public class EstadoContrato {
-    
+public enum EstadoContrato {
+    EN_PROGRESO,
+    COMPLETADO,
+    CANCELADO
 }

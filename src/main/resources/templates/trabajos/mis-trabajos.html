@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis trabajos - Chamba</title>
+</head>
+<body>
+    <h2>Mis trabajos publicados</h2>
+    <a href="/trabajos/nuevo">Publicar nuevo</a> |
+    <a href="/trabajos">Ver todos</a> |
+    <a href="/logout">Cerrar sesión</a>
+    <hr>
+    <div th:each="trabajo : ${trabajos}">
+        <h3 th:text="${trabajo.titulo}"></h3>
+        <p>Estado: <span th:text="${trabajo.estado}"></span></p>
+        <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
+        <a th:href="@{/trabajos/{id}(id=${trabajo.id})}">Ver detalle</a>
+
+        <!-- Botón cancelar: solo si el trabajo está ABIERTO -->
+        <form method="post" th:action="@{/trabajos/{id}/cancelar(id=${trabajo.id})}" style="display:inline">
+            <button type="submit" onclick="return confirm('¿Cancelar este trabajo?')">Cancelar trabajo</button>
+        </form>
+        <hr>
+    </div>
+    
+</body>
+</html>

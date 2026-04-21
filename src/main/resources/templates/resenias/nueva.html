@@ -1,1 +1,27 @@
 
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calificar trabajador - Chamba</title>
+</head>
+<body>
+    <h2>Calificar al trabajador</h2>
+    <p>Trabajo: <span th:text="${contrato.trabajo.titulo}"></span></p>
+    <p>Trabajador: <span th:text="${contrato.trabajador.nombre}"></span></p>
+    <form method="post" action="/resenias/crear">
+        <input type="hidden" name="contratoId" th:value="${contrato.id}">
+        <label>Puntuación (1 a 5):</label>
+        <select name="puntuacion">
+            <option value="1">1 - Muy malo</option>
+            <option value="2">2 - Malo</option>
+            <option value="3">3 - Regular</option>
+            <option value="4">4 - Bueno</option>
+            <option value="5">5 - Excelente</option>
+        </select><br>
+        <label>Comentario:</label><br>
+        <textarea name="comentario" rows="3" cols="50"></textarea><br>
+        <button type="submit">Enviar calificación</button>
+    </form>
+</body>
+</html>

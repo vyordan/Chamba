@@ -1,5 +1,9 @@
 package com.chamba.demo.model.enums;
 
-public class EstadoTrabajo {
-    
+// en model/enums/EstadoTrabajo.java
+public enum EstadoTrabajo {
+    ABIERTO,
+    CERRADO,
+    COMPLETADO,
+    CANCELADO   
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Postulaciones recibidas - Chamba</title>
+</head>
+<body>
+    <h2>Postulaciones a mis trabajos</h2>
+    <div th:each="trabajo : ${trabajos}">
+        <h3 th:text="${trabajo.titulo}"></h3>
+        <div th:each="post : ${trabajo.postulaciones}">
+            <p>Trabajador: <span th:text="${post.trabajador.nombre}"></span></p>
+            <p>Mensaje: <span th:text="${post.mensaje}"></span></p>
+            <p>Estado: <span th:text="${post.estado}"></span></p>
+            <div th:if="${post.estado == 'PENDIENTE'}">
+                <form method="post" th:action="@{/postulaciones/{id}/aceptar(id=${post.id})}" style="display:inline">
+                    <button type="submit">Aceptar</button>
+                </form>
+                <form method="post" th:action="@{/postulaciones/{id}/rechazar(id=${post.id})}" style="display:inline">
+                    <button type="submit">Rechazar</button>
+                </form>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <a href="/trabajos">Volver</a>
+</body>
+</html>

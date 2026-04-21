@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trabajos disponibles - Chamba</title>
+</head>
+<body>
+    <h2>Trabajos disponibles</h2>
+    <a href="/trabajos/nuevo">Publicar trabajo</a> |
+    <a href="/trabajos/mis-trabajos">Mis trabajos</a> |
+    <a href="/postulaciones/mis-postulaciones">Mis postulaciones</a> |
+    <a href="/postulaciones/recibidas">Postulaciones recibidas</a> |
+    <a href="/contratos/mis-contratos">Mis contratos</a> |
+    <a href="/wallet">Mi billetera</a> |
+    <a href="/logout">Cerrar sesión</a>
+    <hr>
+    <div th:each="trabajo : ${trabajos}">
+        <h3><a th:href="@{/trabajos/{id}(id=${trabajo.id})}" th:text="${trabajo.titulo}"></a></h3>
+        <p>Descripción: <span th:text="${trabajo.descripcion}"></span></p>
+        <p>Ubicación: <span th:text="${trabajo.ubicacion}"></span></p>
+        <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
+        <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
+        <hr>
+    </div>
+</body>
+</html>

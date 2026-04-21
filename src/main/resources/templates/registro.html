@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - Chamba</title>
+</head>
+<body>
+    <h2>Registro de usuario</h2>
+    <form method="post" action="/registro" enctype="multipart/form-data">
+        <label>Nombre completo:</label>
+        <input type="text" name="nombre" required><br>
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+        <label>Teléfono:</label>
+        <input type="text" name="telefono"><br>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required><br>
+        <label>Tipo:</label>
+        <select name="tipo">
+            <option value="contratante">Contratante</option>
+            <option value="trabajador">Trabajador</option>
+            <option value="ambos">Ambos</option>
+        </select><br>
+        <label>Ubicación:</label>
+        <input type="text" name="ubicacion" placeholder="Ciudad, zona"><br>
+        <label>Foto de perfil:</label>
+        <input type="file" name="foto" accept="image/*"><br>
+        <button type="submit">Registrarse</button>
+    </form>
+    <p th:if="${error}" th:text="${error}" style="color:red"></p>
+</body>
+</html>

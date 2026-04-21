@@ -1,5 +1,7 @@
 package com.chamba.demo.model.enums;
 
-public class EstadoPostulacion {
-    
+public enum EstadoPostulacion {
+    PENDIENTE,
+    ACEPTADO,
+    RECHAZADO
 }
