@@ -1,14 +1,18 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Calificar trabajador - Chamba</title>
+    <title>Calificar - Chamba</title>
 </head>
 <body>
-    <h2>Calificar al trabajador</h2>
+    <h2 th:text="${esContratante} ? 'Calificar al trabajador' : 'Calificar al contratante'">Calificar</h2>
     <p>Trabajo: <span th:text="${contrato.trabajo.titulo}"></span></p>
-    <p>Trabajador: <span th:text="${contrato.trabajador.nombre}"></span></p>
+    <p th:text="${esContratante} ? 'Trabajador: ' + ${destinatario.nombre} : 'Contratante: ' + ${destinatario.nombre}"></p>
+
+    <div th:if="${error}" style="color:red;">
+        <p th:text="${error}"></p>
+    </div>
+
     <form method="post" action="/resenias/crear">
         <input type="hidden" name="contratoId" th:value="${contrato.id}">
         <label>Puntuación (1 a 5):</label>
@@ -23,5 +27,6 @@
         <textarea name="comentario" rows="3" cols="50"></textarea><br>
         <button type="submit">Enviar calificación</button>
     </form>
+    <a href="/contratos/mis-contratos">Volver</a>
 </body>
 </html>

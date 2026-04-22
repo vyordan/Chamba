@@ -1,6 +1,7 @@
 package com.chamba.demo.service;
 
 import com.chamba.demo.model.Transaccion;
+import com.chamba.demo.model.Trabajo;
 import com.chamba.demo.model.Usuario;
 import com.chamba.demo.model.Wallet;
 import com.chamba.demo.repository.TransaccionRepository;
@@ -54,5 +55,36 @@ public class WalletService {
 
     public boolean tieneSaldoSuficiente(Usuario usuario, Double monto) {
         return usuario.getWallet().getSaldo() >= monto;
+    }
+
+    @Transactional
+    public void retener(Usuario usuario, Double monto, String descripcion) {
+        Wallet wallet = usuario.getWallet();
+        wallet.setSaldo(wallet.getSaldo() - monto);
+        walletRepository.save(wallet);
+
+        Transaccion trans = new Transaccion();
+        trans.setFecha(LocalDateTime.now());
+        trans.setMonto(monto);
+        trans.setTipo("RETENCION");
+        trans.setDescripcion(descripcion);
+        trans.setUsuarioOrigen(usuario);
+        transaccionRepository.save(trans);
+    }
+
+    @Transactional
+    public void devolver(Usuario usuario, Double monto, String descripcion, Trabajo trabajo) {
+        Wallet wallet = usuario.getWallet();
+        wallet.setSaldo(wallet.getSaldo() + monto);
+        walletRepository.save(wallet);
+
+        Transaccion trans = new Transaccion();
+        trans.setFecha(LocalDateTime.now());
+        trans.setMonto(monto);
+        trans.setTipo("DEVOLUCION");
+        trans.setDescripcion(descripcion);
+        trans.setUsuarioDestino(usuario);
+        trans.setTrabajo(trabajo);
+        transaccionRepository.save(trans);
     }
 }

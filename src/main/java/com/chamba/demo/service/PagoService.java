@@ -2,7 +2,9 @@ package com.chamba.demo.service;
 
 import com.chamba.demo.model.*;
 import com.chamba.demo.model.enums.EstadoContrato;
+import com.chamba.demo.model.enums.EstadoTrabajo;
 import com.chamba.demo.repository.ContratoRepository;
+import com.chamba.demo.repository.TrabajoRepository;
 import com.chamba.demo.repository.TransaccionRepository;
 import com.chamba.demo.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,35 +27,7 @@ public class PagoService {
     private TransaccionRepository transaccionRepository;
 
     @Autowired
-    private WalletService walletService;
-
-    @Transactional
-    public Contrato retenerPago(Usuario contratante, Usuario trabajador, Trabajo trabajo, Double monto) {
-        if (!walletService.tieneSaldoSuficiente(contratante, monto)) {
-            throw new RuntimeException("Saldo insuficiente para retener el pago");
-        }
-        Wallet walletContratante = contratante.getWallet();
-        walletContratante.setSaldo(walletContratante.getSaldo() - monto);
-        walletRepository.save(walletContratante);
-
-        Transaccion trans = new Transaccion();
-        trans.setFecha(LocalDateTime.now());
-        trans.setMonto(monto);
-        trans.setTipo("RETENCION");
-        trans.setDescripcion("Pago retenido por trabajo: " + trabajo.getTitulo());
-        trans.setUsuarioOrigen(contratante);
-        trans.setTrabajo(trabajo);
-        transaccionRepository.save(trans);
-
-        Contrato contrato = new Contrato();
-        contrato.setTrabajo(trabajo);
-        contrato.setContratante(contratante);
-        contrato.setTrabajador(trabajador);
-        contrato.setMontoRetenido(monto);
-        contrato.setFechaInicio(LocalDateTime.now());
-        contrato.setEstado(EstadoContrato.EN_PROGRESO);
-        return contratoRepository.save(contrato);
-    }
+    private TrabajoRepository trabajoRepository;
 
     @Transactional
     public void liberarPago(Contrato contrato) {
@@ -90,6 +64,10 @@ public class PagoService {
         contrato.setEstado(EstadoContrato.COMPLETADO);
         contrato.setFechaFin(LocalDateTime.now());
         contratoRepository.save(contrato);
+
+        Trabajo trabajo = contrato.getTrabajo();
+        trabajo.setEstado(EstadoTrabajo.COMPLETADO);
+        trabajoRepository.save(trabajo);
     }
 
     @Transactional
@@ -113,5 +91,9 @@ public class PagoService {
 
         contrato.setEstado(EstadoContrato.CANCELADO);
         contratoRepository.save(contrato);
+
+        Trabajo trabajo = contrato.getTrabajo();
+        trabajo.setEstado(EstadoTrabajo.CANCELADO);
+        trabajoRepository.save(trabajo);
     }
 }

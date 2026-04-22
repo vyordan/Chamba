@@ -1,5 +1,6 @@
 package com.chamba.demo.model;
 
+import com.chamba.demo.model.enums.TipoUsuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,8 @@ public class Usuario {
     private String email;
     private String telefono;
     private String password;
-    private String tipo; // "contratante", "trabajador", "ambos"
+    @Enumerated(EnumType.STRING)
+    private TipoUsuario tipo;
     private String ubicacion;
     private String fotoUrl;
     private LocalDateTime fechaRegistro;
@@ -45,8 +47,8 @@ public class Usuario {
     public void setTelefono(String telefono) { this.telefono = telefono; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public TipoUsuario getTipo() { return tipo; }
+    public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
     public String getUbicacion() { return ubicacion; }
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
     public String getFotoUrl() { return fotoUrl; }

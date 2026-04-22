@@ -56,6 +56,7 @@ public class TrabajoController {
     @GetMapping("/mis-trabajos")
     public String misTrabajos(Model model, HttpSession session) {
         Long userId = (Long) session.getAttribute("usuarioId");
+        if (userId == null) return "redirect:/login";
         Usuario contratante = usuariosService.obtenerPorId(userId);
         model.addAttribute("trabajos", trabajoService.listarPorContratante(contratante));
         return "trabajos/mis-trabajos";

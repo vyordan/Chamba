@@ -1,6 +1,7 @@
 package com.chamba.demo.controller;
 
 import com.chamba.demo.model.Usuario;
+import com.chamba.demo.model.enums.TipoUsuario;
 import com.chamba.demo.service.UsuariosService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,12 @@ public class AuthController {
                            @RequestParam(required = false) MultipartFile foto,
                            Model model) {
         try {
-            usuariosService.registrar(nombre, email, telefono, password, tipo, ubicacion, foto);
+            TipoUsuario tipoUsuario = TipoUsuario.valueOf(tipo.toUpperCase());
+            usuariosService.registrar(nombre, email, telefono, password, tipoUsuario, ubicacion, foto);
             return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", "Tipo de usuario inválido");
+            return "registro";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "registro";

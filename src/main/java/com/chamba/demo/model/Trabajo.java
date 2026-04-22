@@ -23,6 +23,9 @@ public class Trabajo {
     @JoinColumn(name = "contratante_id")
     private Usuario contratante;
 
+    @OneToOne(mappedBy = "trabajo", cascade = CascadeType.ALL)
+    private Contrato contrato;
+
     @OneToMany(mappedBy = "trabajo")
     private List<Postulacion> postulaciones;
 
@@ -43,6 +46,8 @@ public class Trabajo {
     public void setEstado(EstadoTrabajo estado) { this.estado = estado; }
     public Usuario getContratante() { return contratante; }
     public void setContratante(Usuario contratante) { this.contratante = contratante; }
+    public Contrato getContrato() { return contrato; }
+    public void setContrato(Contrato contrato) { this.contrato = contrato; }
     public List<Postulacion> getPostulaciones() { return postulaciones; }
     public void setPostulaciones(List<Postulacion> postulaciones) { this.postulaciones = postulaciones; }
 }

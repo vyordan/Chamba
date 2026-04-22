@@ -18,6 +18,8 @@
             <form method="post" th:action="@{/contratos/{id}/cancelar(id=${c.id})}" style="display:inline">
                 <button type="submit">Cancelar contrato</button>
             </form>
+        </div>
+        <div th:if="${c.estado == 'COMPLETADO'}">
             <a th:href="@{/resenias/nueva/{id}(id=${c.id})}">Calificar trabajador</a>
         </div>
         <hr>
@@ -29,6 +31,9 @@
         <p>Contratante: <span th:text="${c.contratante.nombre}"></span></p>
         <p>Monto a recibir: Q<span th:text="${c.montoRetenido - c.montoRetenido * 0.05}"></span> (comisión 5%)</p>
         <p>Estado: <span th:text="${c.estado}"></span></p>
+        <div th:if="${c.estado == 'COMPLETADO'}">
+            <a th:href="@{/resenias/nueva/{id}(id=${c.id})}">Calificar contratante</a>
+        </div>
         <hr>
     </div>
     <a href="/trabajos">Volver</a>

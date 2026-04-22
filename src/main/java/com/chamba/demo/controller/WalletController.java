@@ -22,6 +22,7 @@ public class WalletController {
     @GetMapping
     public String verWallet(Model model, HttpSession session) {
         Long userId = (Long) session.getAttribute("usuarioId");
+        if (userId == null) return "redirect:/login";
         Usuario usuario = usuariosService.obtenerPorId(userId);
         model.addAttribute("saldo", usuario.getWallet().getSaldo());
         return "wallet";
@@ -30,6 +31,7 @@ public class WalletController {
     @PostMapping("/topup")
     public String recargar(@RequestParam Double monto, HttpSession session) {
         Long userId = (Long) session.getAttribute("usuarioId");
+        if (userId == null) return "redirect:/login";
         Usuario usuario = usuariosService.obtenerPorId(userId);
         walletService.recargar(usuario, monto);
         return "redirect:/wallet";
@@ -38,6 +40,7 @@ public class WalletController {
     @PostMapping("/withdraw")
     public String retirar(@RequestParam Double monto, HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("usuarioId");
+        if (userId == null) return "redirect:/login";
         Usuario usuario = usuariosService.obtenerPorId(userId);
         try {
             walletService.retirar(usuario, monto);

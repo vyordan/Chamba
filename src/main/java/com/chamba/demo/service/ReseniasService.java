@@ -16,6 +16,12 @@ public class ReseniasService {
     private ReseniasRepository reseniasRepository;
 
     public Resenia crearResenia(Usuario autor, Usuario destinatario, Trabajo trabajo, int puntuacion, String comentario) {
+        if (reseniasRepository.existsByAutorAndTrabajo(autor, trabajo)) {
+            throw new RuntimeException("Ya dejaste una reseña para este trabajo");
+        }
+        if (puntuacion < 1 || puntuacion > 5) {
+            throw new RuntimeException("La puntuación debe estar entre 1 y 5");
+        }
         Resenia resenia = new Resenia();
         resenia.setAutor(autor);
         resenia.setDestinatario(destinatario);

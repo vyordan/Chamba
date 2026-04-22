@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/contratos")
-public class ContratoContoller {
+public class ContratoController {
 
     @Autowired
     private ContratoRepository contratoRepository;

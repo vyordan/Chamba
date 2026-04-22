@@ -16,8 +16,8 @@ public class Contrato {
     @Enumerated(EnumType.STRING)
     private EstadoContrato estado;
 
-    @ManyToOne
-    @JoinColumn(name = "trabajo_id")
+    @OneToOne
+    @JoinColumn(name = "trabajo_id", unique = true)
     private Trabajo trabajo;
 
     @ManyToOne
