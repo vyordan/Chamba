@@ -14,14 +14,14 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Ejecución
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-slim
 
 WORKDIR /app
 
 # Copiar el JAR generado desde la etapa anterior
 COPY --from=builder /app/target/*.jar app.jar
 
-# Puerto que expone la aplicación (Spring Boot por defecto 8080)
+# Puerto que expone la aplicación
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
