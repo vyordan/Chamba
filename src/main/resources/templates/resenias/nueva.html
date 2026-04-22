@@ -2,31 +2,300 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Calificar - Chamba</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar · Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0b0b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        /* Tarjeta principal */
+        .review-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            max-width: 600px;
+            width: 100%;
+            padding: 44px 40px;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-icon {
+            font-size: 56px;
+            color: #3b8c3a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        /* Información del contrato */
+        .contract-info {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            padding: 20px;
+            margin: 24px 0 28px;
+        }
+
+        .info-field {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .info-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-field i {
+            width: 20px;
+            color: #3b8c3a;
+            font-size: 14px;
+        }
+
+        .info-field .label {
+            font-weight: 600;
+            color: #b0b0b0;
+            min-width: 100px;
+        }
+
+        .info-field .value {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        /* Formulario */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #b0b0b0;
+            margin-bottom: 10px;
+        }
+
+        .form-group label i {
+            color: #3b8c3a;
+            width: 16px;
+            font-size: 13px;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            transition: all 0.2s;
+            outline: none;
+            color: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3b8c3a;
+            background: #1e1e1e;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .rating-hint {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #6c6c6c;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background: #1b5e20;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .error-message {
+            background: #2a1212;
+            border-left: 3px solid #e53935;
+            padding: 12px 16px;
+            margin: 24px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #ff8a8a;
+        }
+
+        .error-message i {
+            font-size: 16px;
+            color: #e53935;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #262626;
+        }
+
+        .back-link a {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #3b8c3a;
+        }
+
+        @media (max-width: 640px) {
+            .review-card {
+                padding: 32px 24px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .info-field {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .info-field i {
+                display: none;
+            }
+            .info-field .label {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2 th:text="${esContratante} ? 'Calificar al trabajador' : 'Calificar al contratante'">Calificar</h2>
-    <p>Trabajo: <span th:text="${contrato.trabajo.titulo}"></span></p>
-    <p th:text="${esContratante} ? 'Trabajador: ' + ${destinatario.nombre} : 'Contratante: ' + ${destinatario.nombre}"></p>
+    <div class="review-card">
+        <div class="logo-icon">
+            <i class="fas fa-star"></i>
+        </div>
+        <h2 th:text="${esContratante} ? 'Calificar al trabajador' : 'Calificar al contratante'">Calificar</h2>
 
-    <div th:if="${error}" style="color:red;">
-        <p th:text="${error}"></p>
+        <!-- Información del trabajo y persona a calificar -->
+        <div class="contract-info">
+            <div class="info-field">
+                <i class="fas fa-briefcase"></i>
+                <span class="label">Trabajo:</span>
+                <span class="value" th:text="${contrato.trabajo.titulo}">Título del trabajo</span>
+            </div>
+            <div class="info-field">
+                <i class="fas fa-user"></i>
+                <span class="label" th:text="${esContratante} ? 'Trabajador:' : 'Contratante:'">Persona:</span>
+                <span class="value" th:text="${destinatario.nombre}">Nombre</span>
+            </div>
+        </div>
+
+        <!-- Formulario de calificación -->
+        <form method="post" action="/resenias/crear">
+            <input type="hidden" name="contratoId" th:value="${contrato.id}">
+
+            <div class="form-group">
+                <label><i class="fas fa-chart-line"></i> Puntuación</label>
+                <select name="puntuacion">
+                    <option value="1">1 - Muy malo</option>
+                    <option value="2">2 - Malo</option>
+                    <option value="3">3 - Regular</option>
+                    <option value="4" selected>4 - Bueno</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+                <div class="rating-hint">
+                    <span>1: Muy malo</span>
+                    <span>2: Malo</span>
+                    <span>3: Regular</span>
+                    <span>4: Bueno</span>
+                    <span>5: Excelente</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-comment-dots"></i> Comentario</label>
+                <textarea name="comentario" rows="3" placeholder="Describe tu experiencia..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Enviar calificación
+            </button>
+        </form>
+
+        <!-- Mensaje de error (Thymeleaf) -->
+        <div th:if="${error}" class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Enlace volver -->
+        <div class="back-link">
+            <a href="/contratos/mis-contratos"><i class="fas fa-arrow-left"></i> Volver a mis contratos</a>
+        </div>
     </div>
-
-    <form method="post" action="/resenias/crear">
-        <input type="hidden" name="contratoId" th:value="${contrato.id}">
-        <label>Puntuación (1 a 5):</label>
-        <select name="puntuacion">
-            <option value="1">1 - Muy malo</option>
-            <option value="2">2 - Malo</option>
-            <option value="3">3 - Regular</option>
-            <option value="4">4 - Bueno</option>
-            <option value="5">5 - Excelente</option>
-        </select><br>
-        <label>Comentario:</label><br>
-        <textarea name="comentario" rows="3" cols="50"></textarea><br>
-        <button type="submit">Enviar calificación</button>
-    </form>
-    <a href="/contratos/mis-contratos">Volver</a>
 </body>
 </html>

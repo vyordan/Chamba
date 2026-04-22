@@ -2,17 +2,324 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mis postulaciones - Chamba</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis postulaciones · Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0b0b;
+            padding: 40px 24px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            padding: 24px 32px;
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        h2 i {
+            color: #3b8c3a;
+            font-size: 26px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding-top: 20px;
+            border-top: 1px solid #262626;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #1a1a1a;
+            transition: all 0.2s;
+            border-radius: 4px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .nav-links a:hover {
+            background: #222222;
+            color: #3b8c3a;
+            border-color: #3b8c3a;
+        }
+
+        /* Grid de postulaciones */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        /* Tarjeta de postulación */
+        .post-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            padding: 24px;
+            transition: all 0.2s;
+        }
+
+        .post-card:hover {
+            border-color: #3b8c3a;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #262626;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .job-title i {
+            color: #3b8c3a;
+            font-size: 18px;
+        }
+
+        .post-field {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .post-field i {
+            width: 18px;
+            color: #3b8c3a;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .post-field .label {
+            font-weight: 600;
+            color: #b0b0b0;
+            min-width: 100px;
+        }
+
+        .post-field .value {
+            color: #e0e0e0;
+        }
+
+        .post-message {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+
+        .post-message i {
+            color: #3b8c3a;
+            margin-right: 8px;
+        }
+
+        /* Badge de estado */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-PENDIENTE {
+            background: #e65100;
+            color: #ffcc80;
+        }
+
+        .status-ACEPTADA {
+            background: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        .status-RECHAZADA {
+            background: #b71c1c;
+            color: #ef9a9a;
+        }
+
+        /* Empty state */
+        .empty-state {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            color: #3b8c3a;
+            margin-bottom: 20px;
+        }
+
+        .empty-state p {
+            color: #8a8a8a;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 10px 24px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #1b5e20;
+        }
+
+        /* Back link */
+        .back-link {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #3b8c3a;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px;
+            }
+            .header {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            .posts-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .post-field {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .post-field i {
+                display: none;
+            }
+            .post-field .label {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Mis postulaciones</h2>
-    <div th:each="post : ${postulaciones}">
-        <p>Trabajo: <span th:text="${post.trabajo.titulo}"></span></p>
-        <p>Mensaje: <span th:text="${post.mensaje}"></span></p>
-        <p>Estado: <span th:text="${post.estado}"></span></p>
-        <p>Contratante: <span th:text="${post.trabajo.contratante.nombre}"></span></p>
-        <hr>
+    <div class="container">
+        <div class="header">
+            <h2>
+                <i class="fas fa-file-signature"></i>
+                Mis postulaciones
+            </h2>
+            <div class="nav-links">
+                <a href="/trabajos"><i class="fas fa-briefcase"></i> Ver trabajos</a>
+                <a href="/trabajos/nuevo"><i class="fas fa-plus-circle"></i> Publicar trabajo</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </div>
+
+        <!-- Listado de postulaciones -->
+        <div th:unless="${postulaciones.isEmpty()}" class="posts-grid">
+            <div th:each="post : ${postulaciones}" class="post-card">
+                <div class="job-title">
+                    <i class="fas fa-briefcase"></i>
+                    <span th:text="${post.trabajo.titulo}">Título del trabajo</span>
+                </div>
+                <div class="post-field">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="label">Contratante:</span>
+                    <span class="value" th:text="${post.trabajo.contratante.nombre}"></span>
+                </div>
+                <div class="post-field">
+                    <i class="fas fa-tag"></i>
+                    <span class="label">Estado:</span>
+                    <span class="status-badge" th:classappend="'status-' + ${post.estado.name()}" th:text="${post.estado.name()}"></span>
+                </div>
+                <div class="post-message">
+                    <i class="fas fa-comment-dots"></i>
+                    <span th:text="${post.mensaje}">Mensaje del postulante</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje cuando no hay postulaciones -->
+        <div th:if="${postulaciones.isEmpty()}" class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>No has realizado ninguna postulación aún</p>
+            <a href="/trabajos" class="btn-primary">
+                <i class="fas fa-search"></i> Ver trabajos disponibles
+            </a>
+        </div>
+
+        <!-- Enlace volver -->
+        <div class="back-link">
+            <a href="/trabajos"><i class="fas fa-arrow-left"></i> Volver a trabajos disponibles</a>
+        </div>
     </div>
-    <a href="/trabajos">Volver</a>
 </body>
 </html>

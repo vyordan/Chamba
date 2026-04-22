@@ -2,20 +2,240 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Publicar trabajo - Chamba</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar trabajo · Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0b0b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        /* Tarjeta principal */
+        .form-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            max-width: 680px;
+            width: 100%;
+            padding: 44px 40px;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .form-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-icon {
+            font-size: 56px;
+            color: #3b8c3a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        /* Formulario */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group label i {
+            color: #3b8c3a;
+            width: 16px;
+            font-size: 13px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            transition: all 0.2s;
+            outline: none;
+            color: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #3b8c3a;
+            background: #1e1e1e;
+        }
+
+        .input-group input::placeholder,
+        .input-group textarea::placeholder {
+            color: #6c6c6c;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Botón */
+        .btn-submit {
+            width: 100%;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background: #1b5e20;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Mensaje de error */
+        .error-message {
+            background: #2a1212;
+            border-left: 3px solid #e53935;
+            padding: 12px 16px;
+            margin: 24px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #ff8a8a;
+        }
+
+        .error-message i {
+            font-size: 16px;
+            color: #e53935;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #262626;
+        }
+
+        .back-link a {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #3b8c3a;
+        }
+
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 32px 24px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Publicar nuevo trabajo</h2>
-    <form method="post" action="/trabajos/crear">
-        <label>Título:</label>
-        <input type="text" name="titulo" required><br>
-        <label>Descripción:</label>
-        <textarea name="descripcion" rows="4" cols="50"></textarea><br>
-        <label>Ubicación:</label>
-        <input type="text" name="ubicacion" required><br>
-        <label>Monto ofrecido (Q):</label>
-        <input type="number" step="0.01" name="monto" required><br>
-        <button type="submit">Publicar</button>
-    </form>
+    <div class="form-card">
+        <div class="logo-icon">
+            <i class="fas fa-plus-circle"></i>
+        </div>
+        <h2>Publicar trabajo</h2>
+        <div class="subtitle">Completa los datos para ofrecer un trabajo</div>
+
+        <form method="post" action="/trabajos/crear">
+            <div class="input-group">
+                <label><i class="fas fa-heading"></i> Título</label>
+                <input type="text" name="titulo" placeholder="Ej: Se necesita jardinero" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-align-left"></i> Descripción</label>
+                <textarea name="descripcion" rows="4" placeholder="Describe las tareas, horario, requisitos..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-map-marker-alt"></i> Ubicación</label>
+                <input type="text" name="ubicacion" placeholder="Ej: Zona 10, Ciudad de Guatemala" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-coins"></i> Monto ofrecido (Q)</label>
+                <input type="number" step="0.01" name="monto" placeholder="Ej: 150.00" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-cloud-upload-alt"></i> Publicar trabajo
+            </button>
+        </form>
+
+        <!-- Mensaje de error (Thymeleaf) -->
+        <div th:if="${error}" class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="back-link">
+            <a href="/trabajos"><i class="fas fa-arrow-left"></i> Volver a trabajos disponibles</a>
+        </div>
+    </div>
 </body>
 </html>

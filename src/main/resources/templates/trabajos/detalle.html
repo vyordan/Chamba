@@ -2,27 +2,351 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle del trabajo - Chamba</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del trabajo · Chamba</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0b0b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        /* Tarjeta principal */
+        .detail-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            max-width: 800px;
+            width: 100%;
+            padding: 44px 40px;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .detail-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            color: #3b8c3a;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            word-break: break-word;
+        }
+
+        /* Detalles del trabajo */
+        .details-list {
+            margin: 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            font-size: 14px;
+            color: #e0e0e0;
+            border-bottom: 1px solid #262626;
+            padding-bottom: 12px;
+        }
+
+        .detail-item i {
+            width: 22px;
+            color: #3b8c3a;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        .detail-item strong {
+            font-weight: 600;
+            min-width: 100px;
+            color: #b0b0b0;
+        }
+
+        .detail-item span {
+            color: #e0e0e0;
+        }
+
+        .amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3b8c3a;
+        }
+
+        /* Badge de estado */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-ABIERTO {
+            background: #1b5e20;
+            color: #a5d6a7;
+        }
+
+        .status-EN_CURSO {
+            background: #e65100;
+            color: #ffcc80;
+        }
+
+        .status-COMPLETADO {
+            background: #1565c0;
+            color: #90caf9;
+        }
+
+        .status-CANCELADO {
+            background: #b71c1c;
+            color: #ef9a9a;
+        }
+
+        /* Sección de postulación */
+        .postulation-section {
+            margin-top: 32px;
+            border-top: 1px solid #262626;
+            padding-top: 28px;
+        }
+
+        .postulation-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .postulation-section h3 i {
+            color: #3b8c3a;
+            font-size: 18px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group label i {
+            color: #3b8c3a;
+            width: 16px;
+            font-size: 13px;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            transition: all 0.2s;
+            outline: none;
+            color: #e0e0e0;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-group textarea:focus {
+            border-color: #3b8c3a;
+            background: #1e1e1e;
+        }
+
+        .input-group textarea::placeholder {
+            color: #6c6c6c;
+        }
+
+        .btn-submit {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .btn-submit:hover {
+            background: #1b5e20;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Mensaje de error */
+        .error-message {
+            background: #2a1212;
+            border-left: 3px solid #e53935;
+            padding: 12px 16px;
+            margin: 24px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #ff8a8a;
+        }
+
+        .error-message i {
+            font-size: 16px;
+            color: #e53935;
+        }
+
+        .back-link {
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #3b8c3a;
+        }
+
+        @media (max-width: 640px) {
+            .detail-card {
+                padding: 28px 24px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            .detail-item {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .detail-item i {
+                display: none;
+            }
+            .detail-item strong {
+                min-width: auto;
+            }
+            .amount {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2 th:text="${trabajo.titulo}"></h2>
-    <p>Descripción: <span th:text="${trabajo.descripcion}"></span></p>
-    <p>Ubicación: <span th:text="${trabajo.ubicacion}"></span></p>
-    <p>Monto: Q<span th:text="${trabajo.monto}"></span></p>
-    <p>Estado: <span th:text="${trabajo.estado}"></span></p>
-    <p>Publicado por: <span th:text="${trabajo.contratante.nombre}"></span></p>
+    <div class="detail-card">
+        <div class="logo-icon">
+            <i class="fas fa-briefcase"></i>
+        </div>
+        <h2 th:text="${trabajo.titulo}">Título del trabajo</h2>
 
-    <!-- ✨ Nuevo bloque: formulario para postularse ✨ -->
-    <div th:if="true">
-        <h3>Postularme a este trabajo</h3>
-        <form method="post" th:action="@{/postulaciones/crear}">
-            <input type="hidden" name="trabajoId" th:value="${trabajo.id}" />
-            <label>Mensaje para el contratante:</label><br />
-            <textarea name="mensaje" rows="3" cols="40" placeholder="Cuéntale por qué eres la persona ideal para este trabajo..."></textarea><br /><br />
-            <button type="submit">Enviar postulación</button>
-        </form>
+        <div class="details-list">
+            <div class="detail-item">
+                <i class="fas fa-align-left"></i>
+                <strong>Descripción:</strong>
+                <span th:text="${trabajo.descripcion}">Descripción del trabajo</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <strong>Ubicación:</strong>
+                <span th:text="${trabajo.ubicacion}">Ubicación</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-coins"></i>
+                <strong>Monto:</strong>
+                <span class="amount">Q <span th:text="${trabajo.monto}">0.00</span></span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-tag"></i>
+                <strong>Estado:</strong>
+                <span class="status-badge" th:classappend="'status-' + ${trabajo.estado}" th:text="${trabajo.estado}">Estado</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-user-circle"></i>
+                <strong>Publicado por:</strong>
+                <span th:text="${trabajo.contratante.nombre}">Nombre del contratante</span>
+            </div>
+        </div>
+
+        <!-- Formulario para postularse (visible para cualquier usuario autenticado que no sea el contratante, pero lo dejamos condicional simple) -->
+        <div class="postulation-section" th:if="${trabajo.estado == 'ABIERTO'}">
+            <h3>
+                <i class="fas fa-paper-plane"></i>
+                Postularme a este trabajo
+            </h3>
+            <form method="post" th:action="@{/postulaciones/crear}">
+                <input type="hidden" name="trabajoId" th:value="${trabajo.id}" />
+                <div class="input-group">
+                    <label><i class="fas fa-comment-dots"></i> Mensaje para el contratante</label>
+                    <textarea name="mensaje" rows="3" placeholder="Cuéntale por qué eres la persona ideal para este trabajo..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-send"></i> Enviar postulación
+                </button>
+            </form>
+        </div>
+
+        <!-- Mensaje si el trabajo no está abierto para postulaciones -->
+        <div th:if="${trabajo.estado != 'ABIERTO'}" class="error-message" style="margin-top: 24px;">
+            <i class="fas fa-info-circle"></i>
+            <span>Este trabajo no acepta nuevas postulaciones porque su estado es <strong th:text="${trabajo.estado}"></strong>.</span>
+        </div>
+
+        <!-- Mensaje de error general (Thymeleaf) -->
+        <div th:if="${error}" class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="back-link">
+            <a href="/trabajos"><i class="fas fa-arrow-left"></i> Volver a trabajos disponibles</a>
+        </div>
     </div>
-
-    <a href="/trabajos">Volver</a>
 </body>
 </html>
