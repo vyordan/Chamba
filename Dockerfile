@@ -1,28 +1,26 @@
-# Etapa 1: Compilación
+# Etapa 1: Compilación con Maven y JDK 17
 FROM maven:3.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# Copiar solo el pom.xml para cachear dependencias
+# Copiar el archivo de configuración de dependencias primero (para cachear)
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
-# Copiar el resto del código fuente
+# Copiar el código fuente y compilar
 COPY src ./src
-
-# Compilar y empaquetar (genera el JAR)
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Ejecución
-FROM eclipse-temurin:17-jdk-slim
+# Etapa 2: Imagen final más liviana con Amazon Corretto 17 (Alpine)
+FROM amazoncorretto:17-alpine
 
 WORKDIR /app
 
 # Copiar el JAR generado desde la etapa anterior
 COPY --from=builder /app/target/*.jar app.jar
 
-# Puerto que expone la aplicación
+# Puerto de la aplicación
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación
+# Comando de inicio
 ENTRYPOINT ["java", "-jar", "app.jar"]
